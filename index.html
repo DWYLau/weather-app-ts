@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css" />
+  <script defer src="bundle.js"></script></head>
+  <body>
+    <header class="header">
+      <h1>Weather App</h1>
+      <div class="location-search">
+        <div class="search-box">
+          <input
+            type="text"
+            name="location"
+            id="location"
+            placeholder="Location"
+          />
+          <div class="error">Cannot find location</div>
+        </div>
+        <button id="search" type="button">Search</button>
+        <img
+          id="user-coords"
+          src="images/current-location.png"
+          alt="current-location"
+        />
+      </div>
+    </header>
+
+    <main>
+      <div class="weather-info-container">
+        <div class="weather-left">
+          <div class="weather-location">
+            <h1 id="city">City</h1>
+            <h1 id="country">Country</h1>
+            <h3 id="date">Date</h3>
+          </div>
+
+          <div class="weather-details">
+            <div class="detail">
+              <h2>Temperature</h2>
+              <h1 id="temp"></h1>
+            </div>
+            <div class="detail">
+              <h2>Feels like</h2>
+              <h1 id="feels-like"></h1>
+            </div>
+            <div class="detail">
+              <h2>Precipitation</h2>
+              <h1 id="precipitation"></h1>
+            </div>
+            <div class="detail">
+              <h2>Humidity</h2>
+              <h1 id="humidity"></h1>
+            </div>
+            <div class="detail">
+              <h2>Wind Speed</h2>
+              <h1 id="wind-speed"></h1>
+            </div>
+            <div class="detail">
+              <h2>Gust Speed</h2>
+              <h1 id="gust-speed"></h1>
+            </div>
+          </div>
+        </div>
+
+        <div class="weather-display">
+          <img
+            id="weather-image"
+            src="https://openweathermap.org/img/wn/01d@2x.png"
+            alt="weather-image"
+          />
+          <h1 id="description"></h1>
+        </div>
+      </div>
+
+      <div class="weather-forecast">
+        <h1>5 Day Forecast</h1>
+
+        <ul class="weather-cards"></ul>
+      </div>
+    </main>
+  </body>
+</html>
