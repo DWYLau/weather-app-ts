@@ -11,18 +11,17 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Interface: () => (/* reexport module object */ _interface__WEBPACK_IMPORTED_MODULE_1__),
-/* harmony export */   loadFunctions: () => (/* binding */ loadFunctions)
+/* harmony export */   changeDate: () => (/* binding */ changeDate),
+/* harmony export */   changeError: () => (/* binding */ changeError),
+/* harmony export */   changeInfo: () => (/* binding */ changeInfo),
+/* harmony export */   displayError: () => (/* binding */ displayError),
+/* harmony export */   loadFunctions: () => (/* binding */ loadFunctions),
+/* harmony export */   removeError: () => (/* binding */ removeError)
 /* harmony export */ });
 /* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./weather */ "./src/weather.ts");
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
 
-
-
 var location = document.getElementById("location");
-var search = document.getElementById("search");
-var city = document.getElementById("city");
-var date = document.getElementById("date");
-var countryName = document.getElementById("country");
 var temperature = document.getElementById("temp");
 var feelsLike = document.getElementById("feels-like");
 var precipitation = document.getElementById("precipitation");
@@ -30,22 +29,69 @@ var humidity = document.getElementById("humidity");
 var windSpeed = document.getElementById("wind-speed");
 var gustSpeed = document.getElementById("gust-speed");
 var description = document.getElementById("description");
+var error = document.getElementById("error");
 var weatherImage = document.getElementById("weather-image");
 var weatherCardDiv = document.querySelector(".weather-cards");
-var error = document.querySelector(".error");
-var API_KEY = "226dbf12f6c9f3e021556ea66e7c95c9";
+function changeInfo(cityName, countryName) {
+    var city = document.getElementById("city");
+    var country = document.getElementById("country");
+    city.textContent = cityName;
+    country.textContent = countryName;
+    if (city.textContent.length >= 20) {
+        city.style.fontSize = "2rem";
+    }
+}
+function changeDate(dateData) {
+    var date = document.getElementById("date");
+    var options = {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    };
+    date.textContent = new Date(dateData).toLocaleDateString("en-GB", options);
+}
+function changeError() {
+    location.style.marginTop = "2.1rem";
+    error.style.display = "block";
+    error.textContent = "Please enter a city name.";
+    return;
+}
+function displayError() {
+    location.style.marginTop = "2.1rem";
+    error.style.display = "block";
+}
+function removeError() {
+    location.style.marginTop = "0rem";
+    error.style.display = "none";
+}
 function searchCity() {
+    var search = document.getElementById("search");
     search.addEventListener("click", function () {
-        var cityName = location.value.trim();
-        if (!cityName)
-            return;
-        var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=".concat(cityName, "&limit=5&appid=").concat(API_KEY);
+        var city = location.value.trim();
+        if (!city)
+            changeError();
+        var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=".concat(city, "&limit=5&appid=").concat(_weather__WEBPACK_IMPORTED_MODULE_0__.API_KEY);
         _weather__WEBPACK_IMPORTED_MODULE_0__.getCityData(GEOCODING_API);
+    });
+}
+function inputEnterKey() {
+    location.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            var city = location.value.trim();
+            if (!city)
+                changeError();
+            var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=".concat(city, "&limit=5&appid=").concat(_weather__WEBPACK_IMPORTED_MODULE_0__.API_KEY);
+            _weather__WEBPACK_IMPORTED_MODULE_0__.getCityData(GEOCODING_API);
+        }
     });
 }
 function loadFunctions() {
     searchCity();
+    inputEnterKey();
 }
+
+
 
 
 /***/ }),
@@ -58,11 +104,13 @@ function loadFunctions() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Weather: () => (/* reexport module object */ _weather__WEBPACK_IMPORTED_MODULE_0__),
+/* harmony export */   API_KEY: () => (/* binding */ API_KEY),
+/* harmony export */   Weather: () => (/* reexport module object */ _weather__WEBPACK_IMPORTED_MODULE_1__),
 /* harmony export */   getCityData: () => (/* binding */ getCityData),
 /* harmony export */   getWeatherData: () => (/* binding */ getWeatherData)
 /* harmony export */ });
-/* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./weather */ "./src/weather.ts");
+/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
+/* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./weather */ "./src/weather.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -100,19 +148,25 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     }
 };
 
-
-function getCityData(API) {
+var API_KEY = "226dbf12f6c9f3e021556ea66e7c95c9";
+function getCityData(key) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, cityData;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch(API, { mode: "cors" })];
+        var response, data, _a, name, country, lat, lon;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, fetch(key, { mode: "cors" })];
                 case 1:
-                    response = _a.sent();
+                    response = _b.sent();
                     return [4 /*yield*/, response.json()];
                 case 2:
-                    cityData = _a.sent();
-                    console.log(cityData);
+                    data = _b.sent();
+                    if (!data.length) {
+                        _interface__WEBPACK_IMPORTED_MODULE_0__.displayError();
+                    }
+                    _a = data[0], name = _a.name, country = _a.country, lat = _a.lat, lon = _a.lon;
+                    _interface__WEBPACK_IMPORTED_MODULE_0__.removeError();
+                    _interface__WEBPACK_IMPORTED_MODULE_0__.changeInfo(name, country);
+                    getWeatherData(lat, lon, API_KEY);
                     return [2 /*return*/];
             }
         });
@@ -120,7 +174,7 @@ function getCityData(API) {
 }
 function getWeatherData(latitude, longitude, API) {
     return __awaiter(this, void 0, void 0, function () {
-        var FORECAST_API, response, weatherData;
+        var FORECAST_API, response, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -130,13 +184,19 @@ function getWeatherData(latitude, longitude, API) {
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
                 case 2:
-                    weatherData = _a.sent();
-                    console.log(weatherData);
+                    data = _a.sent();
+                    filterForecastData(data);
                     return [2 /*return*/];
             }
         });
     });
 }
+function filterForecastData(data) {
+    var test = data.list[0];
+    console.log(test.dt_txt);
+}
+
+
 
 
 /***/ })
