@@ -160,9 +160,8 @@ function getCityData(key) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _b.sent();
-                    if (!data.length) {
+                    if (!data.length)
                         _interface__WEBPACK_IMPORTED_MODULE_0__.displayError();
-                    }
                     _a = data[0], name = _a.name, country = _a.country, lat = _a.lat, lon = _a.lon;
                     _interface__WEBPACK_IMPORTED_MODULE_0__.removeError();
                     _interface__WEBPACK_IMPORTED_MODULE_0__.changeInfo(name, country);
@@ -192,8 +191,8 @@ function getWeatherData(latitude, longitude, API) {
     });
 }
 function filterForecastData(data) {
-    var test = data.list[0];
-    console.log(test.dt_txt);
+    console.log(data.list[0]);
+    console.log(data.list[0].dt_txt);
 }
 
 

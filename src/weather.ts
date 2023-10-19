@@ -1,13 +1,12 @@
 import * as Interface from "./interface";
+import * as Type from "./type";
 
 export const API_KEY: string = "226dbf12f6c9f3e021556ea66e7c95c9";
 
 export async function getCityData(key: string): Promise<any> {
   const response: Response = await fetch(key, { mode: "cors" });
-  const data = await response.json();
-  if (!data.length) {
-    Interface.displayError();
-  }
+  const data: Type.City = await response.json();
+  if (!data.length) Interface.displayError();
   const { name, country, lat, lon } = data[0];
   Interface.removeError();
   Interface.changeInfo(name, country);
@@ -25,17 +24,9 @@ export async function getWeatherData(
   filterForecastData(data);
 }
 
-function filterForecastData(data: Data) {
-  const test: any = data.list[0];
+function filterForecastData(data: Type.Weather): void {
+  console.log(data.list[0]);
 
-  console.log(test.dt_txt);
+  console.log(data.list[0].dt_txt);
 }
 export * as Weather from "./weather";
-
-interface Data {
-  list: Array<object>;
-}
-
-interface Main {
-  dt_txt: string;
-}
