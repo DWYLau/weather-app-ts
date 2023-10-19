@@ -2,35 +2,25 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/interface.ts":
-/*!**************************!*\
-  !*** ./src/interface.ts ***!
-  \**************************/
+/***/ "./src/dom.ts":
+/*!********************!*\
+  !*** ./src/dom.ts ***!
+  \********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Interface: () => (/* reexport module object */ _interface__WEBPACK_IMPORTED_MODULE_1__),
+/* harmony export */   DOM: () => (/* reexport module object */ _dom__WEBPACK_IMPORTED_MODULE_0__),
 /* harmony export */   changeDate: () => (/* binding */ changeDate),
 /* harmony export */   changeError: () => (/* binding */ changeError),
 /* harmony export */   changeInfo: () => (/* binding */ changeInfo),
+/* harmony export */   changeWeatherInfo: () => (/* binding */ changeWeatherInfo),
 /* harmony export */   displayError: () => (/* binding */ displayError),
-/* harmony export */   loadFunctions: () => (/* binding */ loadFunctions),
 /* harmony export */   removeError: () => (/* binding */ removeError)
 /* harmony export */ });
-/* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./weather */ "./src/weather.ts");
-/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
-
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom */ "./src/dom.ts");
 var location = document.getElementById("location");
-var temperature = document.getElementById("temp");
-var feelsLike = document.getElementById("feels-like");
-var precipitation = document.getElementById("precipitation");
-var humidity = document.getElementById("humidity");
-var windSpeed = document.getElementById("wind-speed");
-var gustSpeed = document.getElementById("gust-speed");
-var description = document.getElementById("description");
 var error = document.getElementById("error");
-var weatherImage = document.getElementById("weather-image");
 var weatherCardDiv = document.querySelector(".weather-cards");
 function changeInfo(cityName, countryName) {
     var city = document.getElementById("city");
@@ -51,6 +41,47 @@ function changeDate(dateData) {
     };
     date.textContent = new Date(dateData).toLocaleDateString("en-GB", options);
 }
+function changeWeatherInfo(data) {
+    var temperature = document.getElementById("temp");
+    var feelsLike = document.getElementById("feels-like");
+    var precipitation = document.getElementById("precipitation");
+    var humidity = document.getElementById("humidity");
+    var windSpeed = document.getElementById("wind-speed");
+    var gustSpeed = document.getElementById("gust-speed");
+    var description = document.getElementById("description");
+    var image = document.getElementById("weather-image");
+    temperature.textContent = Math.round(data.list[0].main.temp) + "°c";
+    feelsLike.textContent = Math.round(data.list[0].main.feels_like) + "°c";
+    precipitation.textContent = data.list[0].pop * 100 + "%";
+    humidity.textContent = data.list[0].main.humidity + "%";
+    windSpeed.textContent = Math.round(data.list[0].wind.speed) + "m/s";
+    gustSpeed.textContent = Math.round(data.list[0].wind.gust) + "m/s";
+    description.textContent = capitalizeDescription(data.list[0].weather[0].description);
+    image.src = changeImage(data.list[0].weather[0].main);
+}
+function changeImage(weather) {
+    if (weather === "Clear") {
+        return "https://openweathermap.org/img/wn/01d@2x.png";
+    }
+    else if (weather === "Rain") {
+        return "https://openweathermap.org/img/wn/10d@2x.png";
+    }
+    else if (weather === "Drizle") {
+        return "https://openweathermap.org/img/wn/09d@2x.png";
+    }
+    else if (weather === "Thunderstorm") {
+        return "https://openweathermap.org/img/wn/11d@2x.png";
+    }
+    else if (weather === "Snow") {
+        return "https://openweathermap.org/img/wn/13d@2x.png";
+    }
+    else if (weather === "Atmosphere") {
+        return "https://openweathermap.org/img/wn/50d@2x.png";
+    }
+    else if (weather === "Clouds") {
+        return "https://openweathermap.org/img/wn/02d@2x.png";
+    }
+}
 function changeError() {
     location.style.marginTop = "2.1rem";
     error.style.display = "block";
@@ -65,12 +96,44 @@ function removeError() {
     location.style.marginTop = "0rem";
     error.style.display = "none";
 }
+function capitalizeDescription(description) {
+    var splitLetters = description.split(" ");
+    for (var i = 0; i < splitLetters.length; i++) {
+        splitLetters[i] =
+            splitLetters[i].charAt(0).toUpperCase() + splitLetters[i].slice(1);
+    }
+    var capitalString = splitLetters.join(" ");
+    return capitalString;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/interface.ts":
+/*!**************************!*\
+  !*** ./src/interface.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Interface: () => (/* reexport module object */ _interface__WEBPACK_IMPORTED_MODULE_2__),
+/* harmony export */   loadFunctions: () => (/* binding */ loadFunctions)
+/* harmony export */ });
+/* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./weather */ "./src/weather.ts");
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dom */ "./src/dom.ts");
+/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
+
+
+var location = document.getElementById("location");
 function searchCity() {
     var search = document.getElementById("search");
     search.addEventListener("click", function () {
         var city = location.value.trim();
         if (!city)
-            changeError();
+            _dom__WEBPACK_IMPORTED_MODULE_1__.changeError();
         var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=".concat(city, "&limit=5&appid=").concat(_weather__WEBPACK_IMPORTED_MODULE_0__.API_KEY);
         _weather__WEBPACK_IMPORTED_MODULE_0__.getCityData(GEOCODING_API);
     });
@@ -80,7 +143,7 @@ function inputEnterKey() {
         if (event.key === "Enter") {
             var city = location.value.trim();
             if (!city)
-                changeError();
+                _dom__WEBPACK_IMPORTED_MODULE_1__.changeError();
             var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=".concat(city, "&limit=5&appid=").concat(_weather__WEBPACK_IMPORTED_MODULE_0__.API_KEY);
             _weather__WEBPACK_IMPORTED_MODULE_0__.getCityData(GEOCODING_API);
         }
@@ -109,7 +172,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getCityData: () => (/* binding */ getCityData),
 /* harmony export */   getWeatherData: () => (/* binding */ getWeatherData)
 /* harmony export */ });
-/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom */ "./src/dom.ts");
 /* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./weather */ "./src/weather.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -161,10 +224,10 @@ function getCityData(key) {
                 case 2:
                     data = _b.sent();
                     if (!data.length)
-                        _interface__WEBPACK_IMPORTED_MODULE_0__.displayError();
+                        _dom__WEBPACK_IMPORTED_MODULE_0__.displayError();
                     _a = data[0], name = _a.name, country = _a.country, lat = _a.lat, lon = _a.lon;
-                    _interface__WEBPACK_IMPORTED_MODULE_0__.removeError();
-                    _interface__WEBPACK_IMPORTED_MODULE_0__.changeInfo(name, country);
+                    _dom__WEBPACK_IMPORTED_MODULE_0__.removeError();
+                    _dom__WEBPACK_IMPORTED_MODULE_0__.changeInfo(name, country);
                     getWeatherData(lat, lon, API_KEY);
                     return [2 /*return*/];
             }
@@ -191,8 +254,8 @@ function getWeatherData(latitude, longitude, API) {
     });
 }
 function filterForecastData(data) {
-    console.log(data.list[0]);
-    console.log(data.list[0].dt_txt);
+    _dom__WEBPACK_IMPORTED_MODULE_0__.changeDate(data.list[0].dt_txt);
+    _dom__WEBPACK_IMPORTED_MODULE_0__.changeWeatherInfo(data);
 }
 
 
