@@ -1,15 +1,15 @@
-import * as Interface from "./interface";
 import * as Type from "./type";
+import * as DOM from "./dom";
 
 export const API_KEY: string = "226dbf12f6c9f3e021556ea66e7c95c9";
 
 export async function getCityData(key: string): Promise<any> {
   const response: Response = await fetch(key, { mode: "cors" });
   const data: Type.City = await response.json();
-  if (!data.length) Interface.displayError();
+  if (!data.length) DOM.displayError();
   const { name, country, lat, lon } = data[0];
-  Interface.removeError();
-  Interface.changeInfo(name, country);
+  DOM.removeError();
+  DOM.changeInfo(name, country);
   getWeatherData(lat, lon, API_KEY);
 }
 
@@ -25,8 +25,7 @@ export async function getWeatherData(
 }
 
 function filterForecastData(data: Type.Weather): void {
-  console.log(data.list[0]);
-
-  console.log(data.list[0].dt_txt);
+  DOM.changeDate(data.list[0].dt_txt);
+  DOM.changeWeatherInfo(data);
 }
 export * as Weather from "./weather";
