@@ -5,13 +5,6 @@ export interface City extends Array<Data> {
   lon: number;
 }
 
-interface Data {
-  name: string;
-  country: string;
-  lat: number;
-  lon: number;
-}
-
 export interface Weather {
   list: [
     {
@@ -34,6 +27,13 @@ export interface Weather {
       };
     },
   ];
+}
+
+interface Data {
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
 }
 
 export * as Type from "./type";

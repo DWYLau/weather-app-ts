@@ -48,24 +48,6 @@ export function changeWeatherInfo(data: Type.Weather): void {
   image.src = changeImage(data.list[0].weather[0].main);
 }
 
-function changeImage(weather: string): string {
-  if (weather === "Clear") {
-    return "https://openweathermap.org/img/wn/01d@2x.png";
-  } else if (weather === "Rain") {
-    return "https://openweathermap.org/img/wn/10d@2x.png";
-  } else if (weather === "Drizle") {
-    return "https://openweathermap.org/img/wn/09d@2x.png";
-  } else if (weather === "Thunderstorm") {
-    return "https://openweathermap.org/img/wn/11d@2x.png";
-  } else if (weather === "Snow") {
-    return "https://openweathermap.org/img/wn/13d@2x.png";
-  } else if (weather === "Atmosphere") {
-    return "https://openweathermap.org/img/wn/50d@2x.png";
-  } else if (weather === "Clouds") {
-    return "https://openweathermap.org/img/wn/02d@2x.png";
-  }
-}
-
 export function changeError(): void {
   location.style.marginTop = "2.1rem";
   error.style.display = "block";
@@ -91,6 +73,24 @@ function capitalizeDescription(description: string): string {
   }
   let capitalString: string = splitLetters.join(" ");
   return capitalString;
+}
+
+function changeImage(weather: string): string {
+  if (weather === "Clear") {
+    return "https://openweathermap.org/img/wn/01d@2x.png";
+  } else if (weather === "Rain") {
+    return "https://openweathermap.org/img/wn/10d@2x.png";
+  } else if (weather === "Drizle") {
+    return "https://openweathermap.org/img/wn/09d@2x.png";
+  } else if (weather === "Thunderstorm") {
+    return "https://openweathermap.org/img/wn/11d@2x.png";
+  } else if (weather === "Snow") {
+    return "https://openweathermap.org/img/wn/13d@2x.png";
+  } else if (weather === "Atmosphere") {
+    return "https://openweathermap.org/img/wn/50d@2x.png";
+  } else if (weather === "Clouds") {
+    return "https://openweathermap.org/img/wn/02d@2x.png";
+  }
 }
 
 export * as DOM from "./dom";

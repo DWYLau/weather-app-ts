@@ -20,7 +20,7 @@ export async function getWeatherData(
 ): Promise<any> {
   const FORECAST_API: string = `https://api.openweathermap.org/data/2.5/forecast/?lat=${latitude}&lon=${longitude}&appid=${API}&units=metric`;
   const response: Response = await fetch(FORECAST_API, { mode: "cors" });
-  const data = await response.json();
+  const data: Type.Weather = await response.json();
   filterForecastData(data);
 }
 
