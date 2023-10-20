@@ -45,21 +45,18 @@ export function changeWeatherInfo(data: Type.Weather): void {
   );
 }
 
-export function changeError(): void {
+export function cityError(): void {
   location.style.marginTop = "2.1rem";
   error.style.display = "block";
-  error.textContent = "Please enter a city name.";
+  error.textContent = "Please check search input.";
   return;
 }
 
-export function displayError(): void {
+export function permissionError() {
   location.style.marginTop = "2.1rem";
   error.style.display = "block";
-}
-
-export function permissionError() {
   error.textContent = "Please request permission.";
-  displayError();
+  return;
 }
 
 export function removeError(): void {

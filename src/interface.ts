@@ -1,15 +1,17 @@
 import * as Weather from "./weather";
 import * as DOM from "./dom";
 
-const location = document.getElementById("location") as HTMLInputElement | null;
+export const location = document.getElementById(
+  "location"
+) as HTMLInputElement | null;
 
 function searchCity(): void {
   const search = document.getElementById("search") as HTMLElement;
   search.addEventListener("click", function () {
     const city: string = location.value.trim();
-    if (!city) DOM.changeError();
-    const GEOCODING_API: string = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather.API_KEY}`;
-    Weather.getCityData(GEOCODING_API);
+    if (!city) DOM.cityError();
+    const CITY_URL: string = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather.API_KEY}`;
+    Weather.getCityData(CITY_URL);
   });
 }
 
@@ -17,7 +19,7 @@ function inputEnterKey(): void {
   location.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       const city: string = location.value.trim();
-      if (!city) DOM.changeError();
+      if (!city) DOM.cityError();
       const GEOCODING_API: string = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather.API_KEY}`;
       Weather.getCityData(GEOCODING_API);
     }
@@ -25,7 +27,8 @@ function inputEnterKey(): void {
 }
 
 function locateUser() {
-  const userLocationButton = document.getElementById("user-coords");
+  const userLocate: HTMLElement = document.getElementById("user-coords");
+  userLocate.addEventListener("click", Weather.getCoords);
 }
 
 function setDefaultCity() {
@@ -37,6 +40,7 @@ export function loadFunctions(): void {
   searchCity();
   inputEnterKey();
   setDefaultCity();
+  locateUser();
 }
 
 export * as Interface from "./interface";
