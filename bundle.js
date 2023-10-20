@@ -15,13 +15,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   changeError: () => (/* binding */ changeError),
 /* harmony export */   changeInfo: () => (/* binding */ changeInfo),
 /* harmony export */   changeWeatherInfo: () => (/* binding */ changeWeatherInfo),
+/* harmony export */   clearCards: () => (/* binding */ clearCards),
+/* harmony export */   createCards: () => (/* binding */ createCards),
 /* harmony export */   displayError: () => (/* binding */ displayError),
+/* harmony export */   permissionError: () => (/* binding */ permissionError),
 /* harmony export */   removeError: () => (/* binding */ removeError)
 /* harmony export */ });
 /* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom */ "./src/dom.ts");
 var location = document.getElementById("location");
 var error = document.getElementById("error");
-var weatherCardDiv = document.querySelector(".weather-cards");
 function changeInfo(cityName, countryName) {
     var city = document.getElementById("city");
     var country = document.getElementById("country");
@@ -32,13 +34,13 @@ function changeInfo(cityName, countryName) {
     }
 }
 function changeDate(dateData) {
-    var date = document.getElementById("date");
     var options = {
         weekday: "long",
         month: "long",
         day: "numeric",
         year: "numeric",
     };
+    var date = document.getElementById("date");
     date.textContent = new Date(dateData).toLocaleDateString("en-GB", options);
 }
 function changeWeatherInfo(data) {
@@ -46,18 +48,18 @@ function changeWeatherInfo(data) {
     var feelsLike = document.getElementById("feels-like");
     var precipitation = document.getElementById("precipitation");
     var humidity = document.getElementById("humidity");
-    var windSpeed = document.getElementById("wind-speed");
-    var gustSpeed = document.getElementById("gust-speed");
-    var description = document.getElementById("description");
+    var wind = document.getElementById("wind-speed");
+    var gust = document.getElementById("gust-speed");
     var image = document.getElementById("weather-image");
+    var description = document.getElementById("description");
     temperature.textContent = Math.round(data.list[0].main.temp) + "°c";
     feelsLike.textContent = Math.round(data.list[0].main.feels_like) + "°c";
     precipitation.textContent = data.list[0].pop * 100 + "%";
     humidity.textContent = data.list[0].main.humidity + "%";
-    windSpeed.textContent = Math.round(data.list[0].wind.speed) + "m/s";
-    gustSpeed.textContent = Math.round(data.list[0].wind.gust) + "m/s";
-    description.textContent = capitalizeDescription(data.list[0].weather[0].description);
+    wind.textContent = Math.round(data.list[0].wind.speed) + "m/s";
+    gust.textContent = Math.round(data.list[0].wind.gust) + "m/s";
     image.src = changeImage(data.list[0].weather[0].main);
+    description.textContent = capitalizeDescription(data.list[0].weather[0].description);
 }
 function changeError() {
     location.style.marginTop = "2.1rem";
@@ -69,9 +71,43 @@ function displayError() {
     location.style.marginTop = "2.1rem";
     error.style.display = "block";
 }
+function permissionError() {
+    error.textContent = "Please request permission.";
+    displayError();
+}
 function removeError() {
     location.style.marginTop = "0rem";
     error.style.display = "none";
+}
+function createCards(data) {
+    var options = {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+    };
+    var cardContainer = document.querySelector(".weather-cards");
+    var card = document.createElement("li");
+    card.classList.add("card");
+    cardContainer.appendChild(card);
+    var day = document.createElement("h3");
+    var weather = document.createElement("img");
+    var temperature = document.createElement("h4");
+    var humidity = document.createElement("h4");
+    var wind = document.createElement("h4");
+    day.textContent = new Date(data.dt_txt).toLocaleDateString("en-GB", options);
+    weather.src = changeImage(data.weather[0].main);
+    temperature.textContent = "Temperature: " + Math.round(data.main.temp) + "°c";
+    humidity.textContent = "Humidity: " + data.main.humidity + "%";
+    wind.textContent = "Wind Speed: " + Math.round(data.wind.speed) + "m/s";
+    card.appendChild(day);
+    card.appendChild(weather);
+    card.appendChild(temperature);
+    card.appendChild(humidity);
+    card.appendChild(wind);
+}
+function clearCards() {
+    var cardContainer = document.querySelector(".weather-cards");
+    cardContainer.innerHTML = "";
 }
 function capitalizeDescription(description) {
     var splitLetters = description.split(" ");
@@ -149,9 +185,17 @@ function inputEnterKey() {
         }
     });
 }
+function locateUser() {
+    var userLocationButton = document.getElementById("user-coords");
+}
+function setDefaultCity() {
+    var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=Yokohama&limit=5&appid=".concat(_weather__WEBPACK_IMPORTED_MODULE_0__.API_KEY);
+    _weather__WEBPACK_IMPORTED_MODULE_0__.getCityData(GEOCODING_API);
+}
 function loadFunctions() {
     searchCity();
     inputEnterKey();
+    setDefaultCity();
 }
 
 
@@ -256,6 +300,18 @@ function getWeatherData(latitude, longitude, API) {
 function filterForecastData(data) {
     _dom__WEBPACK_IMPORTED_MODULE_0__.changeDate(data.list[0].dt_txt);
     _dom__WEBPACK_IMPORTED_MODULE_0__.changeWeatherInfo(data);
+    var uniqueForecastDays = [];
+    var fiveForecastDays = data.list.filter(function (list) {
+        var forecastDate = new Date(list.dt_txt).getDate();
+        if (!uniqueForecastDays.includes(forecastDate))
+            return uniqueForecastDays.push(forecastDate);
+    });
+    if (fiveForecastDays.length > 5)
+        fiveForecastDays.splice(0, 1);
+    _dom__WEBPACK_IMPORTED_MODULE_0__.clearCards();
+    fiveForecastDays.forEach(function (day) {
+        _dom__WEBPACK_IMPORTED_MODULE_0__.createCards(day);
+    });
 }
 
 
