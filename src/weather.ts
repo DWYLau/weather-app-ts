@@ -27,5 +27,16 @@ export async function getWeatherData(
 function filterForecastData(data: Type.Weather): void {
   DOM.changeDate(data.list[0].dt_txt);
   DOM.changeWeatherInfo(data);
+  const uniqueForecastDays: Array<number> = [];
+  const fiveForecastDays: Array<object> = data.list.filter((list) => {
+    const forecastDate: number = new Date(list.dt_txt).getDate();
+    if (!uniqueForecastDays.includes(forecastDate))
+      return uniqueForecastDays.push(forecastDate);
+  });
+  if (fiveForecastDays.length > 5) fiveForecastDays.splice(0, 1);
+  DOM.clearCards();
+  fiveForecastDays.forEach((day: Type.Day) => {
+    DOM.createCards(day);
+  });
 }
 export * as Weather from "./weather";
