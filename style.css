@@ -13,12 +13,12 @@
 
 :root {
   --bg-color: #1d5d9b;
-  --second-bg-color: #75c2f6;
-  --main-color: #bee9ff;
+  --second-bg-color: #c8c8dd;
+  --main-color: #dcf0f0;
 }
 
 body {
-  background: var(--second-bg-color);
+  background: whitesmoke;
 }
 
 main {
@@ -29,12 +29,12 @@ main {
   font-size: 1.3rem;
   width: 100%;
   padding: 0 9% 0.5rem 9%;
-  background: var(--bg-color);
+  background: #dcf0f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   min-height: 15vh;
-  color: white;
+  color: black;
 }
 
 .location-search {
@@ -58,7 +58,7 @@ main {
   padding: 0 0.5rem;
   font-size: 1.5rem;
   font-weight: bold;
-  border-radius: 0.2rem;
+  border-radius: 0.3rem;
   transition: box-shadow ease 0.5s;
 }
 
@@ -87,7 +87,7 @@ main {
 }
 
 .location-search button:hover {
-  background-color: var(--main-color);
+  background-color: #90b8cf;
   color: var(--second-bg-color);
   box-shadow: 0 0 1rem var(--main-color);
 }
@@ -104,7 +104,7 @@ main {
 }
 
 .location-search img:hover {
-  background-color: var(--main-color);
+  background-color: #90b8cf;
   color: var(--second-bg-color);
   box-shadow: 0 0 1rem var(--main-color);
 }
