@@ -17,6 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   cityError: () => (/* binding */ cityError),
 /* harmony export */   clearCards: () => (/* binding */ clearCards),
 /* harmony export */   createCards: () => (/* binding */ createCards),
+/* harmony export */   displayLoading: () => (/* binding */ displayLoading),
 /* harmony export */   permissionError: () => (/* binding */ permissionError),
 /* harmony export */   removeError: () => (/* binding */ removeError)
 /* harmony export */ });
@@ -106,6 +107,13 @@ function clearCards() {
     var cardContainer = document.querySelector(".weather-cards");
     cardContainer.innerHTML = "";
 }
+function displayLoading() {
+    var loader = document.querySelector(".loading");
+    loader.classList.add("display");
+    setTimeout(function () {
+        loader.classList.remove("display");
+    }, 1500);
+}
 function capitalizeDescription(description) {
     var splitLetters = description.split(" ");
     for (var i = 0; i < splitLetters.length; i++) {
@@ -165,6 +173,7 @@ var location = document.getElementById("location");
 function searchCity() {
     var search = document.getElementById("search");
     search.addEventListener("click", function () {
+        _dom__WEBPACK_IMPORTED_MODULE_1__.displayLoading();
         var city = location.value.trim();
         if (!city)
             _dom__WEBPACK_IMPORTED_MODULE_1__.cityError();
@@ -175,6 +184,7 @@ function searchCity() {
 function inputEnterKey() {
     location.addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
+            _dom__WEBPACK_IMPORTED_MODULE_1__.displayLoading();
             var city = location.value.trim();
             if (!city)
                 _dom__WEBPACK_IMPORTED_MODULE_1__.cityError();
@@ -185,7 +195,10 @@ function inputEnterKey() {
 }
 function locateUser() {
     var userLocate = document.getElementById("user-coords");
-    userLocate.addEventListener("click", _weather__WEBPACK_IMPORTED_MODULE_0__.getCoords);
+    userLocate.addEventListener("click", function () {
+        _dom__WEBPACK_IMPORTED_MODULE_1__.displayLoading();
+        _weather__WEBPACK_IMPORTED_MODULE_0__.getCoords();
+    });
 }
 function setDefaultCity() {
     var GEOCODING_API = "https://api.openweathermap.org/geo/1.0/direct?q=Yokohama&limit=5&appid=".concat(_weather__WEBPACK_IMPORTED_MODULE_0__.API_KEY);

@@ -8,6 +8,7 @@ export const location = document.getElementById(
 function searchCity(): void {
   const search = document.getElementById("search") as HTMLElement;
   search.addEventListener("click", function () {
+    DOM.displayLoading();
     const city: string = location.value.trim();
     if (!city) DOM.cityError();
     const CITY_URL: string = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather.API_KEY}`;
@@ -18,6 +19,7 @@ function searchCity(): void {
 function inputEnterKey(): void {
   location.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
+      DOM.displayLoading();
       const city: string = location.value.trim();
       if (!city) DOM.cityError();
       const GEOCODING_API: string = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather.API_KEY}`;
@@ -26,12 +28,15 @@ function inputEnterKey(): void {
   });
 }
 
-function locateUser() {
+function locateUser(): void {
   const userLocate: HTMLElement = document.getElementById("user-coords");
-  userLocate.addEventListener("click", Weather.getCoords);
+  userLocate.addEventListener("click", function () {
+    DOM.displayLoading();
+    Weather.getCoords();
+  });
 }
 
-function setDefaultCity() {
+function setDefaultCity(): void {
   const GEOCODING_API = `https://api.openweathermap.org/geo/1.0/direct?q=Yokohama&limit=5&appid=${Weather.API_KEY}`;
   Weather.getCityData(GEOCODING_API);
 }

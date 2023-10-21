@@ -99,6 +99,14 @@ export function clearCards() {
   cardContainer.innerHTML = "";
 }
 
+export function displayLoading(): void {
+  const loader = document.querySelector(".loading") as HTMLElement;
+  loader.classList.add("display");
+  setTimeout(() => {
+    loader.classList.remove("display");
+  }, 1500);
+}
+
 function capitalizeDescription(description: string): string {
   const splitLetters: string[] = description.split(" ");
   for (let i = 0; i < splitLetters.length; i++) {
