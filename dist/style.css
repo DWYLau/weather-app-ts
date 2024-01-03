@@ -277,35 +277,3 @@ main {
     transform: rotate(360deg);
   }
 }
-
-@media (max-width: 1200px) {
-  html {
-    font-size: 70%;
-  }
-
-  .weather-cards .card {
-    padding: 0.5rem;
-  }
-
-  .weather-left {
-    height: 30vh;
-  }
-
-  .weather-display {
-    height: 30vh;
-  }
-}
-
-@media (max-width: 991px) {
-  html {
-    font-size: 60%;
-  }
-
-  .weather-left {
-    height: 30vh;
-  }
-
-  .weather-display {
-    height: 30vh;
-  }
-}
