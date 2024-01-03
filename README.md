@@ -26,7 +26,7 @@ Weather Application TypeScript
 - OpenWeather API
 - Geolocation API
 
-## Attritute
+## Attributes
 
 - Local icons created by Flaticon / Freepik
 - Background designed by starline/ Freepik
