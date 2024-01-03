@@ -28,7 +28,7 @@ Weather Application TypeScript
 
 ## Attributes
 
-- Local icons created by Flaticon / Freepik
+- Geolocation icon created by Flaticon / Freepik
 - Background designed by starline/ Freepik
 
 ## Live Preview
